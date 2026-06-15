@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Natacha Gauthier</title>
+<style>
+  :root{
+    --pink:#fbeef0;
+    --ink:#352e2c;
+    --rust:#b8543a;
+    --muted:#9c8a86;
+    --line:#ecd9db;
+    --paper:#fff8f8;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--pink);
+    color:var(--ink);
+    font-family:'Georgia', 'Times New Roman', serif;
+    line-height:1.7;
+    font-size:18px;
+  }
+
+  /* Colonne unique centrale, façon journal */
+  .journal{
+    max-width:620px;
+    margin:0 auto;
+    padding:0 28px 120px;
+  }
+
+  header{
+    padding:70px 0 40px;
+    text-align:center;
+  }
+
+  header h1{
+    font-size:2.4rem;
+    font-weight:400;
+    letter-spacing:0.06em;
+  }
+
+  header p{
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    font-size:0.8rem;
+    text-transform:uppercase;
+    letter-spacing:0.22em;
+    color:var(--muted);
+    margin-top:10px;
+  }
+
+  nav{
+    display:flex;
+    gap:24px;
+    justify-content:center;
+    margin-top:30px;
+    flex-wrap:wrap;
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    font-size:0.8rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+  }
+
+  nav a{
+    color:var(--ink);
+    text-decoration:none;
+    border-bottom:2px solid transparent;
+    padding-bottom:4px;
+    transition:border-color 0.2s;
+  }
+
+  nav a:hover, nav a:focus{
+    border-color:var(--rust);
+  }
+
+  /* Chaque entrée du journal = une "page" */
+  .entry{
+    padding:64px 0;
+    border-bottom:1px solid var(--line);
+  }
+
+  .entry:last-of-type{
+    border-bottom:none;
+  }
+
+  .entry-date{
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    font-size:0.75rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:var(--rust);
+    margin-bottom:10px;
+  }
+
+  .entry h2{
+    font-size:1.7rem;
+    font-weight:400;
+    margin-bottom:24px;
+  }
+
+  .entry-figure{
+    width:100%;
+    aspect-ratio:4/5;
+    background:#f3dde0;
+    overflow:hidden;
+    margin-bottom:24px;
+    border-radius:2px;
+  }
+
+  .entry-figure img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    cursor:pointer;
+    transition:transform 0.5s ease;
+  }
+
+  .entry-figure:hover img{
+    transform:scale(1.03);
+  }
+
+  .entry p{
+    margin-bottom:16px;
+    font-size:1.02rem;
+  }
+
+  /* Vignettes en colonne, façon photos collées dans un carnet */
+  .strip{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    margin-top:8px;
+  }
+
+  .strip figure{
+    width:100%;
+    aspect-ratio:4/5;
+    background:#f3dde0;
+    overflow:hidden;
+    border-radius:2px;
+  }
+
+  .strip figure img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    cursor:pointer;
+    transition:transform 0.5s ease;
+  }
+
+  .strip figure:hover img{
+    transform:scale(1.03);
+  }
+
+  /* Contact */
+  .contact-list{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-top:24px;
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    font-size:0.95rem;
+  }
+
+  .contact-list a{
+    color:var(--ink);
+    text-decoration:none;
+    border-bottom:1px solid var(--rust);
+    align-self:flex-start;
+  }
+
+  .contact-list a:hover{
+    color:var(--rust);
+  }
+
+  footer{
+    padding:40px 28px 60px;
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    font-size:0.72rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    text-align:center;
+  }
+
+  /* Lightbox */
+  .lightbox{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(53,46,44,0.94);
+    z-index:100;
+    align-items:center;
+    justify-content:center;
+    padding:30px;
+  }
+
+  .lightbox.open{
+    display:flex;
+  }
+
+  .lightbox img{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+  }
+
+  .lightbox-close{
+    position:absolute;
+    top:20px;
+    right:24px;
+    color:var(--paper);
+    font-size:2rem;
+    cursor:pointer;
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    line-height:1;
+  }
+
+  /* Responsive mobile */
+  @media (max-width: 600px){
+    body{font-size:16px;}
+
+    .journal{padding:0 20px 90px;}
+
+    header{padding:50px 0 30px;}
+    header h1{font-size:2rem;}
+
+    .entry{padding:48px 0;}
+    .entry h2{font-size:1.4rem;}
+  }
+</style>
+</head>
+<body>
+
+<div class="journal">
+
+  <header>
+    <h1>Natacha Gauthier</h1>
+    <p>Carnet d'images &amp; récits</p>
+    <nav>
+      <a href="#blog">Blog</a>
+      <a href="#supermarche">Supermarché</a>
+      <a href="#del-cul">Docteur Del Cul</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Entrée : Blog -->
+  <section class="entry" id="blog">
+    <p class="entry-date">Série</p>
+    <h2>Blog</h2>
+    <div class="strip">
+      <figure><img src="images/Arbre.jpg" alt="Arbre" loading="lazy" onclick="openLightbox(this)"></figure>
+      <figure><img src="images/Lapin.jpg" alt="Lapin" loading="lazy" onclick="openLightbox(this)"></figure>
+      <figure><img src="images/Lapin7.jpg" alt="Lapin" loading="lazy" onclick="openLightbox(this)"></figure>
+      <figure><img src="images/Lapin8.jpg" alt="Lapin" loading="lazy" onclick="openLightbox(this)"></figure>
+      <figure><img src="images/Lapin9.jpg" alt="Lapin" loading="lazy" onclick="openLightbox(this)"></figure>
+      <figure><img src="images/Lapin10.jpg" alt="Lapin" loading="lazy" onclick="openLightbox(this)"></figure>
+      <figure><img src="images/IMG_3857.jpg" alt="" loading="lazy" onclick="openLightbox(this)"></figure>
+      <figure><img src="images/IMG_4843.jpg" alt="" loading="lazy" onclick="openLightbox(this)"></figure>
+    </div>
+  </section>
+
+  <!-- Entrée : Supermarché -->
+  <section class="entry" id="supermarche">
+    <p class="entry-date">Série</p>
+    <h2>Supermarché</h2>
+    <div class="strip">
+      <figure><img src="images/IMG_2271.jpg" alt="Supermarché" loading="lazy" onclick="openLightbox(this)"></figure>
+      <figure><img src="images/Soeur_web.jpg" alt="" loading="lazy" onclick="openLightbox(this)"></figure>
+    </div>
+  </section>
+
+  <!-- Entrée : Docteur Del Cul -->
+  <section class="entry" id="del-cul">
+    <p class="entry-date">Récit</p>
+    <h2>Docteur Del Cul</h2>
+    <p>Docteur Del Cul, psychiatre à la clinique du Château. Il mesure 3 mètres. Je le vois déambuler dans le parc. On dirait un gibon, avec ses grands bras dont il ne sait pas quoi faire. Ses chemisettes à carreaux sont laides. Il m'aime bien, je crois. Je l'aime tellement. Je commande des badges « Dr Del Cul for ever » avec une typo des feux de l'amour. Je me pavane avec mon badge dans le château.</p>
+  </section>
+
+  <!-- Entrée : La Crevette -->
+  <section class="entry">
+    <p class="entry-date">Récit</p>
+    <h2>La Crevette</h2>
+    <div class="entry-figure">
+      <img src="images/Crevette-1.jpg" alt="La Crevette" loading="lazy" onclick="openLightbox(this)">
+    </div>
+    <p>J'ai 7 ans. Je passe mes vacances avec Papi et Mamie. Souvent, nous allons au restaurant à Aix-les-Bains. Dans cette salle immense se dresse un buffet à volonté. Moi, normalement si muette, des mots sortent de ma bouche. « Ça sent la crevette ». Réaction scandalisée de ma grand-mère : « On ne dit pas que ça sent la crevette, ça ne se fait pas ! ». Pas d'autre explication. Je suis restée longtemps sans réponse : « Pourquoi ne doit-on pas parler de l'odeur des crevettes ? ».</p>
+  </section>
+
+  <!-- Entrée : Le cubi de ma mère -->
+  <section class="entry">
+    <p class="entry-date">Récit</p>
+    <h2>Le cubi de ma mère</h2>
+    <div class="entry-figure">
+      <img src="images/Web_Canteval.jpg" alt="Le cubi de ma mère" loading="lazy" onclick="openLightbox(this)">
+    </div>
+    <p>Après l'école, je rentrais à pied chez mes grands-parents. Pierre Gauthier dans son bureau et Annie dans la cuisine. Un amour infini entre nous trois. Ma maman venait me chercher ici tous les soirs vers 19h. Alors commençait le rituel entre femmes : boire un petit coup de rouge.</p>
+    <p>Le coup de rouge, il est dans la cuisine. Une bouteille de Canteval : « Natacha, tu peux descendre m'acheter une bouteille de Canteval ? Tu vois laquelle c'est ? » « Oui ».</p>
+    <p>Cette bouteille et le verre ballon, ils étaient là, jour et nuit. Verre souvent sale avec un dépôt rougeâtre au fond. Dans notre maison, le même verre ballon, sale et inévitable. À côté, ce cubi de vin rouge — modernité absolue — toujours disponible.</p>
+  </section>
+
+  <!-- Entrée : Mes feutres Caran d'Ache -->
+  <section class="entry">
+    <p class="entry-date">Récit</p>
+    <h2>Mes feutres Caran d'Ache</h2>
+    <div class="entry-figure">
+      <img src="images/feutres_web.jpg" alt="Mes feutres Caran d'Ache" loading="lazy" onclick="openLightbox(this)">
+    </div>
+    <p>Ma maman m'a offert cette boîte de feutres. C'est ma meilleure amie, je passe des heures avec elle. Des heures à dessiner, à colorier. Des heures à remettre les couleurs dans un ordre harmonieux. C'est rangé, tout est à sa place. Ça m'apaise, me rassure. Ce bien-être, je ne le comprends que maintenant. Le besoin de cette boîte, son contenu, ces choses rangées, cet ordre. Je m'y raccroche.</p>
+  </section>
+
+  <!-- Contact -->
+  <section class="entry" id="contact">
+    <p class="entry-date">Contact</p>
+    <h2>Échanger</h2>
+    <div class="contact-list">
+      <a href="mailto:contact@natachagauthier.com">contact@natachagauthier.com</a>
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  &copy; Natacha Gauthier — 2026
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+function openLightbox(imgEl){
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img');
+  lbImg.src = imgEl.src;
+  lbImg.alt = imgEl.alt;
+  lb.classList.add('open');
+}
+
+function closeLightbox(e){
+  const lb = document.getElementById('lightbox');
+  lb.classList.remove('open');
+  document.getElementById('lightbox-img').src = '';
+}
+
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape'){
+    closeLightbox(e);
+  }
+});
+</script>
+
+</body>
+</html>
